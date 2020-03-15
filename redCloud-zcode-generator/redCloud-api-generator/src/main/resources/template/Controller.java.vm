@@ -1,0 +1,82 @@
+package ${package}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import ${package}.entity.${className}Entity;
+import ${package}.service.${className}Service;
+import ${mainPath}.common.utils.R;
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+@Api(tags = "${tableName}")
+@RequestMapping("/${pathName}")
+public class ${className}Controller{
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+
+
+    @ApiOperation(value = "列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "第几页"),
+            @ApiImplicitParam(name = "limit",value = "需要的条数")
+    })
+    @PostMapping(path = "/list")
+    public R list(@RequestParam Map<String, Object> params){
+        return ${classname}Service.queryPage(params);
+    }
+
+
+    @ApiOperation(value = "信息")
+    @GetMapping("/info/{${pk.attrname}}")
+    public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
+        return R.ok().put("data", ${classname});
+    }
+
+    @ApiOperation(value = "保存")
+    @PostMapping("/save")
+    public R save(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.insert(${classname});
+        return R.ok();
+    }
+
+    @ApiOperation(value = "修改")
+    @PostMapping("/update")
+    public R update(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.updateById(${classname});
+        return R.ok();
+    }
+
+    @ApiOperation(value = "批量删除")
+    @PostMapping("/deletes")
+    public R deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+			${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
+
+        return R.ok();
+    }
+
+    @ApiOperation(value = "单个删除")
+    @DeleteMapping("/delete/{${pk.attrname}}")
+    public R delete(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+            ${className}Entity ${classname} = ${classname}Service.deleteById(${pk.attrname});
+        return R.ok().put("data", ${classname});
+    }
+
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>定时任务日志</title>
+<#include "/header.html">
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.jobId" @keyup.enter="query" placeholder="任务ID" />
+				</div>
+				<a class="layui-btn search_btn" @click="query">查询</a>
+			</div>
+		</form>
+	</blockquote>
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/job/schedule_log.js?_${.now?long}"></script>
+</body>
+</html>

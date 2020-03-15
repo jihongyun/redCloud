@@ -1,0 +1,48 @@
+package ${package}.entity;
+
+import com.alibaba.druid.sql.visitor.functions.If;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import io.swagger.annotations.ApiModelProperty;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Data
+@Accessors(chain = true)
+@TableName("${tableName}")
+public class ${className}Entity implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+
+	#if($column.columnName == $pk.columnName)
+@TableId
+	@ApiModelProperty(value = "${column.comments}")
+	private $column.attrType $column.attrname;
+	#else
+@ApiModelProperty(value = "${column.comments}")
+	#if($column.isnull == $no)
+#if($column.attrType == 'String')
+@NotBlank(groups = AddGroup.class,message = "${column.comments}不能为空！")
+#else
+@NotNull(groups = AddGroup.class,message = "${column.comments}不能为空！")
+#end
+	#end
+private $column.attrType $column.attrname;
+	#end
+
+#end
+}

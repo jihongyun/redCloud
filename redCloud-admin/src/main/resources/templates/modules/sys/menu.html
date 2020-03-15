@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>菜单管理</title>
+<#include "/header.html">
+<link rel="stylesheet" href="${request.contextPath}/statics/css/bootstrap.min.css">
+<link rel="stylesheet" href="${request.contextPath}/statics/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="${request.contextPath}/statics/plugins/treegrid/jquery.treegrid.css">
+<script src="${request.contextPath}/statics/plugins/bootstrap-table.min.js"></script>
+<script src="${request.contextPath}/statics/plugins/treegrid/jquery.treegrid.min.js"></script>
+<script src="${request.contextPath}/statics/plugins/treegrid/jquery.treegrid.bootstrap3.js"></script>
+<script src="${request.contextPath}/statics/plugins/treegrid/jquery.treegrid.extension.js"></script>
+<script src="${request.contextPath}/statics/plugins/treegrid/tree.table.js"></script>
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form not-underline">
+			<#if shiro.hasPermission("sys:menu:save")>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="add">新增</a>
+			</div>
+			</#if>
+			<#if shiro.hasPermission("sys:menu:update")>
+				<div class="layui-inline">
+					<a class="layui-btn" @click="update">修改</a>
+				</div>
+			</#if>
+			<#if shiro.hasPermission("sys:menu:delete")>
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-danger layui-btn-normal" @click="del">删除</a>
+				</div>
+			</#if>
+		</form>
+	</blockquote>
+
+	<table id="menuTable" data-mobile-responsive="true" data-click-to-select="true">
+		<thead>
+		<tr>
+			<th data-field="selectItem" data-checkbox="true"></th>
+		</tr>
+		</thead>
+	</table>
+
+	<!-- 表单 -->
+	<form v-show="showForm" class="layui-form ren-form" id="editForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">类型</label>
+			<div class="layui-input-block">
+				<input type="radio" name="type" v-model="menu.type" lay-filter="type" value="0" title="目录">
+				<input type="radio" name="type" v-model="menu.type" lay-filter="type" value="1" title="菜单">
+				<input type="radio" name="type" v-model="menu.type" lay-filter="type" value="2" title="按钮">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: auto;">菜单名称</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="menu.name" autocomplete="off" placeholder="菜单名称或按钮名称" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: auto;">上级菜单</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" style="cursor:pointer;" v-model="menu.parentName" @click="menuTree" readonly="readonly" placeholder="一级菜单" class="layui-input">
+			</div>
+		</div>
+		<div v-if="menu.type == 1" class="layui-form-item">
+			<label class="layui-form-label" style="width: auto;">菜单URL</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="menu.url" autocomplete="off" placeholder="菜单URL" class="layui-input">
+			</div>
+		</div>
+		<div v-if="menu.type == 1 || menu.type == 2" class="layui-form-item">
+			<label class="layui-form-label" style="width: auto;">授权标识</label>
+			<div class="layui-input-block">
+				<input type="text" v-model="menu.perms" autocomplete="off" placeholder="授权标识" class="layui-input">
+			</div>
+		</div>
+		<div v-if="menu.type != 2" class="layui-form-item">
+			<label class="layui-form-label" style="width: auto;">排序号</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="menu.orderNum" autocomplete="off" placeholder="排序号" class="layui-input">
+			</div>
+		</div>
+		<div v-if="menu.type != 2" class="layui-form-item">
+			<label class="layui-form-label" style="width: auto;">图标</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="menu.icon" autocomplete="off" placeholder="图标" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+	<ul id="menuTree" class="ztree"></ul>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/sys/menu.js?_${.now?long}"></script>
+</body>
+</html>

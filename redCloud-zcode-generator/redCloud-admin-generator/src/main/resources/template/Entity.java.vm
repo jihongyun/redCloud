@@ -1,0 +1,57 @@
+package ${package}.${moduleName}.entity;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.redCloud.common.validator.group.AddGroup;
+import io.swagger.annotations.ApiModelProperty;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Data
+@Accessors(chain = true)
+@TableName("${tableName}" )
+public class ${className}Entity extends Model<${className}Entity>  {
+#foreach ($column in $columns)
+
+#if($column.columnName == $pk.columnName)
+    @ApiModelProperty(value = "${column.comments}" )
+    @TableId(type = IdType.AUTO)
+    private $column.attrType $column.attrname;
+#else
+    @ApiModelProperty(value = "${column.comments}" )
+#if($column.isnull == 'NO')
+#if($column.attrType == 'String')
+    @NotBlank(groups = AddGroup.class, message = "${column.comments}不能为空！" )
+#else
+    @NotNull(groups = AddGroup.class, message = "${column.comments}不能为空！" )
+#end
+#end
+    private $column.attrType $column.attrname;
+#end
+
+#end
+#foreach ($column in $columns)
+#if($column.columnName == $pk.columnName)
+	@Override
+	protected Serializable pkVal() {
+		return $column.attrname;
+	}
+#end
+#end
+
+}

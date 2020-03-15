@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>邮件模板</title>
+<#include "/header.html">
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input searchVal" v-model="q.name" @keyup.enter="query" placeholder="请输入模板名称" />
+				</div>
+				<a class="layui-btn search_btn" @click="query">查询</a>
+			</div>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="addTemplate">新增模板</a>
+			</div>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="addConfig">邮件配置</a>
+			</div>
+			<div class="layui-inline">
+				<a class="layui-btn" @click="sendForm">发送邮件</a>
+			</div>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-danger layui-btn-normal delBatch">批量删除</a>
+			</div>
+		</form>
+	</blockquote>
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+
+
+	<!-- 模板配置 -->
+	<form v-show="showForm" class="layui-form ren-form" id="editForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">SMTP</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.smtp" autocomplete="off" placeholder="SMTP" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">端口号</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.port" autocomplete="off" placeholder="端口号" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">邮箱账号</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.username" autocomplete="off" placeholder="邮箱账号" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">邮箱密码</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="config.password" autocomplete="off" placeholder="邮箱密码" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveConfig">确定</button>
+			</div>
+		</div>
+	</form>
+
+	<!-- 新增模板 -->
+	<form v-show="addForm" class="layui-form ren-form" id="addForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">模板名称</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="template.name" autocomplete="off" placeholder="模板名称" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">主题</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" v-model="template.subject" autocomplete="off" placeholder="主题" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容</label>
+			<div class="layui-input-block">
+				<textarea id="content"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveTemplate">保存</button>
+			</div>
+		</div>
+	</form>
+
+	<!-- 发送邮件 -->
+	<form v-show="smsForm" class="layui-form ren-form" id="smsForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">模板ID</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required|number" v-model="mail.templateId" autocomplete="off" placeholder="模板ID" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">收件人</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required|email" v-model="mail.mailTo" autocomplete="off" placeholder="收件人" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">抄送</label>
+			<div class="layui-input-block">
+				<input type="text" v-model="mail.mailCc" autocomplete="off" placeholder="抄送，可为空" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">模板参数</label>
+			<div class="layui-input-block">
+				<input type="text" v-model="mail.params" autocomplete="off" placeholder='如：{"code":"123456"}' class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="sendSms">发送</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<!--操作-->
+<script type="text/html" id="barTpl">
+	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+<script src="${request.contextPath}/statics/js/modules/message/mail_template.js?_${.now?long}"></script>
+</body>
+</html>

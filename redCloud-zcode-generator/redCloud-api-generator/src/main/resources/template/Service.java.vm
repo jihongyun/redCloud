@@ -1,0 +1,19 @@
+package ${package}.service;
+
+import com.baomidou.mybatisplus.service.IService;
+import ${package}.entity.${className}Entity;
+import io.redCloud.common.utils.R;
+import java.util.Map;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface ${className}Service extends IService<${className}Entity> {
+
+    R queryPage(Map<String, Object> params);
+}
+

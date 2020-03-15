@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>后台首页</title>
+    <meta name="renderer" content="webkit">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+	<meta name="apple-mobile-web-app-capable" content="yes">	
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/plugins/layui-2.3.0/css/layui.css" media="all">
+</head>
+<body class="layui-bg-gray">
+<div class="layui-fluid">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 layui-col-lg6">
+				<section class="layui-panel">
+					<div class="layui-panel-body">
+						<table class="layui-table">
+							<tr>
+								<td><span>系统名称:</span></td>
+								<td><span>renren-security【企业版】</span></td>
+							</tr>
+							<tr>
+								<td><span>版本信息:</span></td>
+								<td><span>v1.1.0</span></td>
+							</tr>
+							<tr>
+								<td><span>操作系统:</span></td>
+								<td>${osName}</td>
+							</tr>
+							<tr>
+								<td><span>系统版本:</span></td>
+								<td>${osVersion}</td>
+							</tr>
+							<tr>
+								<td><span>系统架构:</span></td>
+								<td>${osArch}</td>
+							</tr>
+							<tr>
+								<td><span>CPU核数:</span></td>
+								<td>${processors}</td>
+							</tr>
+							<tr>
+								<td><span>系统内存:</span></td>
+								<td>${totalPhysical}MB</td>
+							</tr>
+							<tr>
+								<td><span class="tit">剩余内存:</span></td>
+								<td>${freePhysical}MB</td>
+							</tr>
+							<tr>
+								<td><span>内存使用:</span></td>
+								<td>${memoryRate}%</td>
+							</tr>
+							<tr>
+								<td><span>系统语言:</span></td>
+								<td>${userLanguage}</td>
+							</tr>
+						</table>
+					</div>
+				</section>
+			</div>
+			<!-- JVM概览 -->
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 layui-col-lg6">
+				<section class="layui-panel">
+					<div class="layui-panel-body">
+						<table class="layui-table">
+							<tr>
+								<td><span>JVM信息:</span></td>
+								<td><span>${jvmName}</span></td>
+							</tr>
+							<tr>
+								<td><span>JVM版本:</span></td>
+								<td><span>${javaVersion}</span></td>
+							</tr>
+							<tr>
+								<td><span>JAVA_HOME:</span></td>
+								<td>${javaHome}</td>
+							</tr>
+							<tr>
+								<td><span>工作目录:</span></td>
+								<td>${userDir}</td>
+							</tr>
+							<tr>
+								<td><span>JVM占用内存:</span></td>
+								<td>${javaTotalMemory}MB</td>
+							</tr>
+							<tr>
+								<td><span>JVM空闲内存:</span></td>
+								<td>${javaFreeMemory}MB</td>
+							</tr>
+							<tr>
+								<td><span>JVM最大内存:</span></td>
+								<td>${javaMaxMemory}MB</td>
+							</tr>
+							<tr>
+								<td><span>当前用户:</span></td>
+								<td>${userName}</td>
+							</tr>
+							<tr>
+								<td><span>CPU负载:</span></td>
+								<td>${systemCpuLoad}%</td>
+							</tr>
+							<tr>
+								<td><span>系统时区:</span></td>
+								<td>${userTimezone}</td>
+							</tr>
+						</table>
+					</div>
+				</section>
+			</div>
+		</div>
+</div>
+<!-- 加载js文件-->
+<script src="${request.contextPath}/statics/plugins/jquery-2.2.4/jquery.min.js"></script>
+<script src="${request.contextPath}/statics/plugins/layui-2.3.0/layui.js"></script>
+</body>
+</html>

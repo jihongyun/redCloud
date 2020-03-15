@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <title>RedCloud</title>
+  <link rel="icon" type="image/png" href="${request.contextPath}/favicon.ico" />
+  <link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui-2.3.0/css/layui.css">
+  <link rel="stylesheet" href="${request.contextPath}/statics/css/index.css">
+  <link rel="stylesheet" href="${request.contextPath}/statics/css/login.css">
+</head>
+<body>
+  <div class="site-wrapper site-page--login">
+    <div class="site-content__wrapper">
+      <div class="site-content">
+        <div class="brand-info">
+          <h2 class="brand-info__text">RedCloud</h2>
+          <p class="brand-info__intro">您好，欢迎使用RedCloud！</p>
+        </div>
+        </div>
+        <div class="login-main">
+          <h3 class="login-title">管理后台登录中心</h3>
+          <form class="layui-form">
+            <div class="adminui-user-login-box adminui-user-login-body layui-form">
+            <div class="layui-form-item">
+              <label class="adminui-user-login-icon layui-icon layui-icon-username" for="Renren-user-login-username"></label>
+                <input type="text" name="username" lay-verify="required" id="Renren-user-login-username" autocomplete="off" class="layui-input" placeholder="请输入用户名">
+            </div>
+            <div class="layui-form-item">
+              <label class="adminui-user-login-icon layui-icon layui-icon-password" for="Renren-user-login-password" id="password"></label>
+                <input type="password" name="password" id="Renren-user-login-password" lay-verify="required|password" autocomplete="off" class="layui-input" placeholder="请输入密码">
+            </div>
+            <div class="layui-form-item" id="captcha">
+              <div class="layui-row">
+                <div class="layui-col-xs7">
+                  <label class="adminui-user-login-icon layui-icon layui-icon-vercode" for="Renren-user-login-vercode"></label>
+                  <input type="text" name="captcha" id="Renren-user-login-vercode" lay-verify="required" placeholder="输入验证码" class="layui-input">
+                </div>
+                <div class="layui-col-xs5">
+                  <div style="margin-left: 3px;">
+                    <img src="${request.contextPath}/captcha.jpg" @click="refreshCode" class="img-captcha" id="codeimage">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <button class="layui-btn layui-btn-fluid login-btn-submit" lay-submit lay-filter="login">立即登录</button>
+            </div>
+            </div>
+          </form>
+          <div class="login-copyright">© 2018 RedCloud 版权所有  <a href="https://www.jihongyun.cn/" target="_blank">RedCloud</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="${request.contextPath}/statics/plugins/jquery-2.2.4/jquery.min.js"></script>
+  <script src="${request.contextPath}/statics/plugins/layui-2.3.0/layui.all.js"></script>
+  <script src="${request.contextPath}/statics/js/login.js"></script>
+</body>
+</html>

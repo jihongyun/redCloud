@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <title>RedCloud</title>
+  <link rel="icon" type="image/png" href="${request.contextPath}/favicon.ico" />
+  <link rel="stylesheet" href="${request.contextPath}/statics/plugins/layui-2.3.0/css/layui.css">
+  <link rel="stylesheet" href="${request.contextPath}/statics/css/index.css">
+</head>
+<body>
+  <div class="site-wrapper" id="rrapp" v-cloak>
+    <nav class="site-navbar">
+      <div class="site-navbar__header">
+        <h1 class="site-navbar__brand">
+          <a class="site-navbar__brand-lg" href="javascript:">RedCloud</a>
+          <a class="site-navbar__brand-mini" href="javascript:">RedCloud</a>
+        </h1>
+      </div>
+      <div class="site-navbar__body clearfix">
+        <a href="javascript:" class="site-navbar__switch"><i class="layui-icon layui-icon-shrink-right"></i></a>
+        <ul class="site-navbar__menu  site-navbar__menu--right layui-nav">
+          <li class="layui-nav-item"><a href="http://www.RedCloud.io/community" target="_blank"><i class="layui-icon layui-icon-home" style="font-size: 16px;"></i> 官方社区</a></li>
+          <li class="layui-nav-item"><a href="http://www.RedCloud.io/enterprise" target="_blank"><i class="layui-icon layui-icon-code-circle" style="font-size: 16px;"></i> 产品授权</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:"><img src="http://t.cn/RCzsdCq" class="layui-nav-img">{{user.username}}</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:" @click="updatePassword">修改密码</a></dd>
+              <dd><a href="logout">退出</a></dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <aside class="site-sidebar">
+      <div class="site-sidebar__inner">
+        <!-- 侧边栏菜单 容器 -->
+        <ul class="site-sidebar__menu layui-nav layui-nav-tree"></ul>
+      </div>
+    </aside>
+    <div class="site-content__wrapper">
+      <main class="site-content site-content--tabs layui-tab" lay-allowClose="true" lay-filter="J_contentTabs">
+        <!-- tabs 工具类 -->
+        <div class="content-tabs__header-lt">
+          <a class="content-tabs__header-perv" href="javascript:"><i class="layui-icon layui-icon-prev"></i></a>
+        </div>
+        <div class="content-tabs__header-rt">
+          <a class="content-tabs__header-next" href="javascript:"><i class="layui-icon layui-icon-next"></i></a>
+          <div class="content-tabs__header-tools">
+            <a href="javascript:"><i class="layui-icon layui-icon-down"></i></a>
+            <ul>
+              <li data-type="current">关闭当前标签页</li>
+              <li data-type="other">关闭其它标签页</li>
+              <li data-type="total">关闭全部标签页</li>
+            </ul>
+          </div>
+        </div>
+        <!-- tabs 容器 -->
+        <ul class="layui-tab-title">
+          <li lay-id="home" class="layui-this">首页</li>
+        </ul>
+        <div class="layui-tab-content">
+          <div class="layui-tab-item layui-show"><iframe src="home.html" width="100%" height="100%" frameborder="0" scrolling="yes"></iframe></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- 修改密码 -->
+    <div id="passwordLayer" style="display: none;">
+      <form class="layui-form">
+        <div class="layui-form-item">
+          <label class="layui-form-label">账号</label>
+          <label class="layui-form-label laber-account">{{user.username}}</label>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">原密码</label>
+          <div class="layui-input-inline">
+            <input type="password" v-model="password" placeholder="原密码" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">新密码</label>
+          <div class="layui-input-inline">
+            <input type="text" v-model="newPassword" placeholder="新密码" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="${request.contextPath}/statics/plugins/jquery-2.2.4/jquery.min.js"></script>
+  <script src="${request.contextPath}/statics/plugins/vue-2.5.16/vue.min.js"></script>
+  <script src="${request.contextPath}/statics/plugins/layui-2.3.0/layui.js"></script>
+  <script src="${request.contextPath}/statics/js/index.js"></script>
+</body>
+</html>

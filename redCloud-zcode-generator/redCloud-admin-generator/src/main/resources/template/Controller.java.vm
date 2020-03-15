@@ -1,0 +1,97 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import ${package}.${moduleName}.excel.${className}Bean;
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.${className}Service;
+import ${mainPath}.common.utils.LayuiPage;
+import ${mainPath}.common.utils.ExcelUtils;
+import ${mainPath}.common.utils.R;
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Api(value = "${comments}")
+@RestController
+@RequestMapping("${moduleName}/${pathName}")
+public class ${className}Controller extends AbstractController{
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    @ApiOperation(value = "${comments}信息列表")
+    @ApiOperationSupport(
+            params = @DynamicParameters(properties = {
+                    @DynamicParameter(value = "多少条",name = "limit",dataTypeClass = Integer.class),
+                    @DynamicParameter(value = "第几页",name = "page",dataTypeClass = Integer.class,example = "1")
+            },name = "params"),
+            author = "${author}"
+    )
+    @RequestMapping("/list")
+    @RequiresPermissions("${moduleName}:${pathName}:list")
+    public R<List<${className}Entity>> list(@RequestParam Map<String, Object> params){
+        LayuiPage page = ${classname}Service.queryPage(params);
+
+        return page;
+    }
+
+
+    @ApiOperation(value = "${comments}信息获取通过id")
+    @GetMapping("/info/{${pk.attrname}}")
+    @RequiresPermissions("${moduleName}:${pathName}:info")
+    public R<${className}Entity> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+			${className}Entity ${classname} = ${classname}Service.getById(${pk.attrname});
+
+        return R.ok(${classname});
+    }
+
+
+    @ApiOperation(value = "${comments}信息保存")
+    @PostMapping("/save")
+    @RequiresPermissions("${moduleName}:${pathName}:save")
+    public R save(@RequestBody ${className}Entity ${classname}){
+			${classname}Service.save(${classname});
+        return R.ok();
+    }
+
+    @ApiOperation(value = "${comments}信息修改")
+    @RequestMapping("/update")
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+    public R update(@RequestBody ${className}Entity ${classname}){
+			${classname}Service.updateById(${classname});
+
+        return R.ok();
+    }
+
+    @ApiOperation(value = "${comments}信息删除通过id")
+    @RequestMapping("/delete")
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+    public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+			${classname}Service.removeByIds(Arrays.asList(${pk.attrname}s));
+
+        return R.ok();
+    }
+
+    /**
+     * 导出
+    */
+    @RequestMapping("/export")
+    @RequiresPermissions("${moduleName}:${pathName}:export")
+    public void export(@RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
+        LayuiPage page = ${classname}Service.queryPage(params);
+
+        ExcelUtils.exportExcelToTarget(response, "${comments}", page.getData(), ${className}Bean.class);
+    }
+
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>文件上传</title>
+<#include "/header.html">
+</head>
+<body class="ren-body">
+<div id="rrapp" v-cloak>
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-normal" @click="addConfig">存储配置</a>
+			</div>
+			<div class="layui-inline">
+				<button type="button" class="layui-btn" id="upload">
+					<i class="layui-icon">&#xe67c;</i>上传文件
+				</button>
+			</div>
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-danger layui-btn-normal delBatch">批量删除</a>
+			</div>
+		</form>
+	</blockquote>
+	<table class="layui-hide" id="grid" lay-filter="grid"></table>
+
+
+	<!-- 表单 -->
+	<form v-show="showForm" class="layui-form ren-form" id="editForm">
+		<div class="layui-form-item">
+			<label class="layui-form-label">存储类型</label>
+			<div class="layui-input-block">
+				<input type="radio" name="type" v-model="config.type" lay-filter="type" value="1" title="七牛">
+				<input type="radio" name="type" v-model="config.type" lay-filter="type" value="2" title="阿里云">
+				<input type="radio" name="type" v-model="config.type" lay-filter="type" value="3" title="腾讯云">
+				<input type="radio" name="type" v-model="config.type" lay-filter="type" value="4" title="FastDFS">
+				<input type="radio" name="type" v-model="config.type" lay-filter="type" value="5" title="本地上传">
+			</div>
+		</div>
+		<div v-if="config.type == 1">
+			<div class="layui-form-item">
+				<label class="layui-form-label">域名</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qiniuDomain" autocomplete="off" placeholder="七牛绑定的域名，如：http://cdn.RedCloud.io" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">路径前缀</label>
+				<div class="layui-input-block">
+					<input type="text" v-model="config.qiniuPrefix" autocomplete="off" placeholder="不设置默认为空" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">AccessKey</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qiniuAccessKey" autocomplete="off" placeholder="七牛AccessKey" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">SecretKey</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qiniuSecretKey" autocomplete="off" placeholder="七牛SecretKey" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">空间名</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qiniuBucketName" autocomplete="off" placeholder="七牛存储空间名" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div v-if="config.type == 2">
+			<div class="layui-form-item">
+				<label class="layui-form-label">域名</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.aliyunDomain" autocomplete="off" placeholder="阿里云绑定的域名，如：http://cdn.RedCloud.io" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">路径前缀</label>
+				<div class="layui-input-block">
+					<input type="text" v-model="config.aliyunPrefix" autocomplete="off" placeholder="不设置默认为空" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">EndPoint</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.aliyunEndPoint" autocomplete="off" placeholder="阿里云EndPoint" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">AccessKeyId</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.aliyunAccessKeyId" autocomplete="off" placeholder="阿里云AccessKeyId" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">AccessKeySecret</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.aliyunAccessKeySecret" autocomplete="off" placeholder="阿里云AccessKeySecret" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">BucketName</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.aliyunBucketName" autocomplete="off" placeholder="阿里云BucketName" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div v-if="config.type == 3">
+			<div class="layui-form-item">
+				<label class="layui-form-label">域名</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qcloudDomain" autocomplete="off" placeholder="腾讯云绑定的域名，如：http://cdn.RedCloud.io" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">路径前缀</label>
+				<div class="layui-input-block">
+					<input type="text" v-model="config.qcloudPrefix" autocomplete="off" placeholder="不设置默认为空" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">AppId</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qcloudAppId" autocomplete="off" placeholder="腾讯云AppId" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">SecretId</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qcloudSecretId" autocomplete="off" placeholder="腾讯云SecretId" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">SecretKey</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qcloudSecretKey" autocomplete="off" placeholder="腾讯云SecretKey" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">BucketName</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.qcloudBucketName" autocomplete="off" placeholder="腾讯云BucketName" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">所属地区</label>
+				<div class="layui-input-block">
+					<select name="qcloudRegion" v-model="config.qcloudRegion" lay-filter="status" lay-verify="required">
+						<option value="">请选择</option>
+						<option value="ap-beijing-1">北京一区（华北）</option>
+						<option value="ap-beijing">北京</option>
+						<option value="ap-shanghai">上海（华东）</option>
+						<option value="ap-guangzhou">广州（华南）	</option>
+						<option value="ap-chengdu">成都（西南）</option>
+						<option value="ap-chongqing">重庆</option>
+						<option value="ap-singapore">新加坡</option>
+						<option value="ap-hongkong">香港</option>
+						<option value="na-toronto">多伦多</option>
+						<option value="eu-frankfurt">法兰克福</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div v-if="config.type == 4">
+			<div class="layui-form-item">
+				<label class="layui-form-label">域名</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.fastdfsDomain" autocomplete="off" placeholder="绑定的域名，如：http://cdn.RedCloud.io" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div v-if="config.type == 5">
+			<div class="layui-form-item">
+				<label class="layui-form-label">域名</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.localDomain" autocomplete="off" placeholder="绑定的域名，如：http://cdn.RedCloud.io" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">路径前缀</label>
+				<div class="layui-input-block">
+					<input type="text" v-model="config.localPrefix" autocomplete="off" placeholder="不设置默认为空" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">存储目录</label>
+				<div class="layui-input-block">
+					<input type="text" lay-verify="required" v-model="config.localPath" autocomplete="off" placeholder="如：D:/upload" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="saveOrUpdate">确定</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/oss/oss.js?_${.now?long}"></script>
+</body>
+</html>
